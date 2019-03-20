@@ -4,7 +4,7 @@
 
 ## 效果图如下
 ![Screen shot](Doc/preview1.gif)
-![Screen shot](Doc/preview12.gif)
+![Screen shot](Doc/preview2.gif)
 
 ## 介绍
 本库的使用非常简单，低耦合。只需要几行代码，即可使应用拥有自定义的转场动画和侧滑返回效果。
