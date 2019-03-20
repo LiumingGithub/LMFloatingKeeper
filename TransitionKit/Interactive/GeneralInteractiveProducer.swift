@@ -10,10 +10,17 @@ import UIKit
 
 open class GeneralInteractiveProducer: InteractiveProducerType {
     
+    open var supportEdges: [InteractiveDraggingEdge] = [.left, .right, .left, .right]
+    
     open func interactionControllerFor(
         _ animationController: UIViewControllerAnimatedTransitioning,
         draggingGesture: UIPanGestureRecognizer,
         draggingEdg: InteractiveDraggingEdge) -> UIViewControllerInteractiveTransitioning? {
+        
+        if !supportEdges.contains(draggingEdg) {
+            print("unsupport draggingEdg: \(draggingEdg)")
+            return nil
+        }
         
         if let interruptible = animationController as? AnimatedTransitioningInterruptible, interruptible.isInterruptible {
             return BaseGestureInteractive(draggingGesture, draggingEdge: draggingEdg)

@@ -120,5 +120,25 @@ class InteractiveViewController: NormalViewController {
 class FloatingAbleViewController: InteractiveViewController, FloatingKeepAble {
     
     
+    var observer: Any?
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        // 添加通知
+        observer = NotificationCenter.default.addObserver(forName: .lm_didKeptByFloatingBar, object: nil, queue: nil) {[weak self] (notification) in
+            
+            if let anyKeepable = notification.object as? AnyFloatingKeepAble,
+                anyKeepable == self {
+                print("\(self!.classForCoder) Was been kept by floating bar")
+            }
+        }
+    }
+    
+    deinit {
+        if let observer = observer {
+            NotificationCenter.default.removeObserver(observer)
+        }
+    }
+    
 }
 

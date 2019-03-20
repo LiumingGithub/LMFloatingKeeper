@@ -10,10 +10,16 @@ import UIKit
 
 public class FloatingKeepInteractiveProducer: InteractiveProducerType {
     
+    public var supportEdges: [InteractiveDraggingEdge] = [.left, .right]
+    
     var producer = GeneralInteractiveProducer()
     
     public func interactionControllerFor(_ animationController: UIViewControllerAnimatedTransitioning, draggingGesture: UIPanGestureRecognizer, draggingEdg: InteractiveDraggingEdge) -> UIViewControllerInteractiveTransitioning? {
         
+        if !supportEdges.contains(draggingEdg) {
+            print("unsupport draggingEdg: \(draggingEdg)")
+            return nil
+        }
         if animationController is FloatingKeeperPopTransation {
             return FloatingKeeperInteractive(draggingGesture, draggingEdge: draggingEdg)
         }

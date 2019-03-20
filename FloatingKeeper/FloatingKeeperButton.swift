@@ -16,7 +16,7 @@ open class FloatingKeeperButton: UIButton {
         static let drawingOffset: CGFloat = 15
     }
     
-    let blurEffectView = UIVisualEffectView.init(effect: UIBlurEffect.init(style: .dark))
+    let blurEffectView = UIVisualEffectView(effect: UIBlurEffect.init(style: .dark))
     
     let imageDivider = RectDivider.top(.percent(Contant.ImageLayoutPercent))
     
@@ -57,28 +57,20 @@ open class FloatingKeeperButton: UIButton {
     open override func contentRect(forBounds bounds: CGRect) -> CGRect {
         let offset = bounds.width - bounds.width / CGFloat(sqrt(2.0))
         switch forDraggingEdge {
-        case .left, .top:
-            break
         case .right:
             return bounds.lm.creatNewRect(by: { (rect) in
                 rect.origin.y = offset
                 rect.size.width =  rect.width - offset
                 rect.size.height = rect.height - offset
             })
-        case .bottom:
+        default:
             return bounds.lm.creatNewRect(by: { (rect) in
                 rect.origin.x = offset
+                rect.origin.y = offset
                 rect.size.width =  rect.width - offset
                 rect.size.height = rect.height - offset
             })
         }
-        
-        return bounds.lm.creatNewRect(by: { (rect) in
-            rect.origin.x = offset
-            rect.origin.y = offset
-            rect.size.width =  rect.width - offset
-            rect.size.height = rect.height - offset
-        })
     }
     
     open override func imageRect(forContentRect contentRect: CGRect) -> CGRect {
@@ -103,21 +95,14 @@ open class FloatingKeeperButton: UIButton {
         let mask = BlockShapeMaskView { (rect) in
             let drawRect: CGRect
             switch edg {
-            case .left, .top:
-                drawRect = rect.lm.creatNewRect(by: { (frame) in
-                    frame.size.width = rect.width * 2
-                    frame.size.height = rect.height * 2
-                })
             case .right:
                 drawRect = rect.lm.creatNewRect(by: { (frame) in
                     frame.origin.x = -rect.width
                     frame.size.width = rect.width * 2
                     frame.size.height = rect.height * 2
                 })
-            case .bottom:
+            default:
                 drawRect = rect.lm.creatNewRect(by: { (frame) in
-                    frame.origin.x = -rect.width
-                    frame.origin.y = -rect.height
                     frame.size.width = rect.width * 2
                     frame.size.height = rect.height * 2
                 })

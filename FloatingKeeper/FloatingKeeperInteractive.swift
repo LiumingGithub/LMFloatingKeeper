@@ -61,10 +61,10 @@ open class FloatingKeeperInteractive: BaseGestureInteractive {
         let containerBounds = transitionContext.containerView.bounds
         
         if case .right = draggingEdge {
-            buttonInitialFrame = CGRect.init(x: -Constant.buttonSize.width, y: containerBounds.height, width: Constant.buttonSize.width, height: Constant.buttonSize.height)
+            buttonInitialFrame = CGRect(x: -Constant.buttonSize.width, y: containerBounds.height, width: Constant.buttonSize.width, height: Constant.buttonSize.height)
         }
         else {
-            buttonInitialFrame = CGRect.init(x: containerBounds.width, y: containerBounds.height, width: Constant.buttonSize.width, height: Constant.buttonSize.height)
+            buttonInitialFrame = CGRect(x: containerBounds.width, y: containerBounds.height, width: Constant.buttonSize.width, height: Constant.buttonSize.height)
         }
         // bind new action for checking the gesture move inside and outside
         // the drawerview
@@ -98,8 +98,8 @@ open class FloatingKeeperInteractive: BaseGestureInteractive {
     open override func finish() {
         if touchesInsideButton,
             let element = transitionContext!.viewController(forKey: .from) as? AnyFloatingKeepAble {
-            NotificationCenter.default.post(name: .lm_didTempSubcript, object: element)
-            FloatingKeeperManager.shared.append(element)
+            NotificationCenter.default.post(name: .lm_didKeptByFloatingBar, object: element)
+            FloatingKeeperManager.shared.received(element)
         }
         pullIn()
         super.finish()

@@ -19,16 +19,12 @@ NavigationInteractiveControlType {
     open var draggingEdge: InteractiveDraggingEdge? = nil
     
     // MARK: - UINavigationControllerDelegate
-    open func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
-        draggingGesture = nil
-        draggingEdge = nil
-    }
-    
     open func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return aniTransitionProducer.animation(from: fromVC, to: toVC, For: AniTransitionOperation(operation))
     }
     
     open func navigationController(_ navigationController: UINavigationController, interactionControllerFor animationController: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+        ///该处一定要将draggingGesture在返回前设置为nil，否则会出现系统返回失效的bug
         defer {
             draggingGesture = nil
         }

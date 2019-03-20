@@ -25,16 +25,21 @@ public enum InteractiveDraggingEdge: Int {
 }
 
 extension FrameAniTransitionProducer.UponAnimationType {
+    
     public func recommendInteractiveEdge(for operation: AniTransitionOperation) -> InteractiveDraggingEdge? {
         switch (self, operation) {
         case (.fromRight, .backward), (.fromLeft, .forward):  return .left
         case (.fromLeft, .backward), (.fromRight, .forward):  return .right
+        case (.fromTop, .backward), (.fromBottom, .forward):  return .bottom
+        case (.fromBottom, .backward), (.fromTop, .forward):  return .top
         default: return nil
         }
     }
 }
 
 public protocol InteractiveProducerType {
+    
+    var supportEdges: [InteractiveDraggingEdge] { get }
     
     func interactionControllerFor(
         _ animationController: UIViewControllerAnimatedTransitioning,
