@@ -76,3 +76,7 @@ class FloatingAbleViewController: UIViewController, FloatingKeepAble {
  FloatingKeeperManager.shared.floatingBarManager = your floating bar manager
   
   ```
+  
+## 许可证
+
+LMFloatingKeeper 是基于 MIT 许可证下发布的，详情请参见 LICENSE。
