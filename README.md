@@ -69,3 +69,11 @@ class FloatingAbleViewController: UIViewController, FloatingKeepAble {
     // your implemention
 }
   ```
+  
+  ### 如果已实现了floatingbar效果
+  
+  ```swift
+ //实现 FloatingBarManagerType 协议，然后调用
+ FloatingKeeperManager.shared.floatingBarManager = your floating bar manager
+  
+  ```
