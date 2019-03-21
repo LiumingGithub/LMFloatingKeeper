@@ -25,7 +25,7 @@
     }
         
   ```
-  当前直接创建GeneralTransitionControl，会使用默认的动画效果，如果需要修改则需要改变初始化的方式
+  当然, 直接使用init()，会使用默认的动画效果，使用下面的方式创建可以进行自定义
   ```swift
   
         //transaction动画，目前有FrameAniTransitionProducer 和 AppleAniTransitionProducer 后续会进行扩展
