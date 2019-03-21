@@ -16,13 +16,10 @@ public class FloatingKeepInteractiveProducer: InteractiveProducerType {
     
     public func interactionControllerFor(_ animationController: UIViewControllerAnimatedTransitioning, draggingGesture: UIPanGestureRecognizer, draggingEdg: InteractiveDraggingEdge) -> UIViewControllerInteractiveTransitioning? {
         
-        if !supportEdges.contains(draggingEdg) {
-            print("unsupport draggingEdg: \(draggingEdg)")
-            return nil
-        }
         if animationController is FloatingKeeperPopTransation {
             return FloatingKeeperInteractive(draggingGesture, draggingEdge: draggingEdg)
         }
+        
         return producer.interactionControllerFor(animationController, draggingGesture:draggingGesture, draggingEdg: draggingEdg)
     }
     
@@ -55,7 +52,7 @@ public class FloatingKeepTransitionProducer: AniTransitionProducerType {
     
     public func animation(from fromVC: UIViewController, to toVC: UIViewController, For operation: AniTransitionOperation) -> UIViewControllerAnimatedTransitioning? {
         if case .backward = operation, fromVC is FloatingKeepAble {
-            let animation = FloatingKeeperPopTransation(0.3, interruptible: true)
+            let animation = FloatingKeeperPopTransation(FloatingKeeperPopTransation.Constant.defaultTransationDuring, interruptible: true)
             animation.uponAnimationType = uponAnimationType
             animation.underAnimationType = underAnimationType
             return animation
@@ -64,32 +61,14 @@ public class FloatingKeepTransitionProducer: AniTransitionProducerType {
     }
 }
 
-open class FloatingKeeperControl: NSObject, UINavigationControllerDelegate, NavigationInteractiveControlType {
+
+open class FloatingKeeperControl: GeneralTransitionControl {
     
-    public var aniTransitionProducer: AniTransitionProducerType = FloatingKeepTransitionProducer()
-    public var interactiveProducer: InteractiveProducerType = FloatingKeepInteractiveProducer()
-    public var interactiveEnabled: Bool = true
-    public var draggingGesture: UIPanGestureRecognizer? = nil
-    public var draggingEdge: InteractiveDraggingEdge? = nil
-    
-    // MARK: - UINavigationControllerDelegate
-    
-    open func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return aniTransitionProducer.animation(from: fromVC, to: toVC, For: AniTransitionOperation(operation))
+    open var floatingTransitionProducer: FloatingKeepTransitionProducer {
+        return aniTransitionProducer as! FloatingKeepTransitionProducer
     }
     
-    open func navigationController(_ navigationController: UINavigationController, interactionControllerFor animationController: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
-        
-        ///该处一定要将draggingGesture在返回前设置为nil，否则会出现系统返回失效的bug
-        defer {
-            draggingGesture = nil
-        }
-        
-        guard interactiveEnabled,
-            let gesture = draggingGesture,
-            let edge = draggingEdge else {
-                return nil
-        }
-        return interactiveProducer.interactionControllerFor(animationController, draggingGesture: gesture, draggingEdg: edge)
+    public init() {
+        super.init(aniTransitionProducer: FloatingKeepTransitionProducer(), interactiveProducer: FloatingKeepInteractiveProducer())
     }
 }

@@ -14,8 +14,9 @@ import UIKit
 open class FrameAniTransitionProducer: AniTransitionProducerType {
     
     struct Constant {
-        static let crowd: CGFloat       = 0.3
-        static let squeezed: CGFloat    = 15
+        static let crowd: CGFloat                   = 0.3
+        static let squeezed: CGFloat                = 15
+        static let defaultDuring: TimeInterval      = 0.3
     }
     
     /// 上层的viewcontroller 动画效果
@@ -65,7 +66,7 @@ open class FrameAniTransitionProducer: AniTransitionProducerType {
             let uponView: UIView = uponVC.view
             let underVC = fromVC
             let underView: UIView = underVC.view
-            return BlockAnimatedTransitioning(0.3, interruptible: interruptible, animate: { (during, context) in
+            return BlockAnimatedTransitioning(Constant.defaultDuring, interruptible: interruptible, animate: { (during, context) in
                 let uponFinalFrame = context.finalFrame(for: uponVC)
                 let underInitialFrame = context.initialFrame(for: underVC)
                 
@@ -88,7 +89,7 @@ open class FrameAniTransitionProducer: AniTransitionProducerType {
             let uponView: UIView = uponVC.view
             let underVC = toVC
             let underView: UIView = underVC.view
-            return BlockAnimatedTransitioning(0.3, interruptible: interruptible, animate: { (during, context) in
+            return BlockAnimatedTransitioning(Constant.defaultDuring, interruptible: interruptible, animate: { (during, context) in
                 
                 let uponInitialFrame = context.initialFrame(for: uponVC)
                 let underFinalFrame = context.finalFrame(for: underVC)

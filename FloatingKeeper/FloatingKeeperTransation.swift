@@ -9,6 +9,10 @@
 import UIKit
 
 open class FloatingKeeperPopTransation: BaseAnimatedTransitioning {
+    struct Constant {
+        static let defaultTransationDuring  = 0.3
+        static let defaultInteractiveDuring = 0.3
+    }
     
     public enum UponAnimationType: Int{
         case fromLeft = 0, fromRight
@@ -72,16 +76,16 @@ open class FloatingKeeperPopTransation: BaseAnimatedTransitioning {
                 //如果加入到浮窗，修改wasKeeped， 并执行新的动画
                 wasKeeped = true
                 
-                let during: TimeInterval = 0.3
+                let interactiveDuring: TimeInterval = Constant.defaultInteractiveDuring
                 let currentframe = uponView.frame
                 uponView.frame = currentframe
                 
                 // 在view移动回uponInitialFrame 的过程中，使用mask动画，
                 // 形成移动和frame渐变的效果
-                UIView.animate(withDuration: during, animations: {
+                UIView.animate(withDuration: interactiveDuring, animations: {
                     uponView.frame = uponInitialFrame
                     UIView.performWithoutAnimation {
-                        let mask = AnimatableBlockMaskView.init(animationDuring: during, animate: { (percent, rect) -> ShapeConvertable in
+                        let mask = AnimatableBlockMaskView.init(animationDuring: interactiveDuring, animate: { (percent, rect) -> ShapeConvertable in
                             let maskdrawRect = rect.lm.transform(to: endFrame, percent: percent)
                             return CGPath.init(roundedRect: maskdrawRect, cornerWidth: raduis, cornerHeight: raduis, transform: nil)
                         })

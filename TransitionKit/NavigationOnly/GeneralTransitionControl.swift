@@ -8,31 +8,43 @@
 
 import UIKit
 
-open class GeneralTransitionControl: NSObject, UINavigationControllerDelegate,
-NavigationInteractiveControlType {
+open class GeneralTransitionControl: NSObject, UINavigationControllerDelegate, NavigationInteractiveControlType {
     
-    /// NavigationInteractiveControl properties
-    open var interactiveProducer: InteractiveProducerType = GeneralInteractiveProducer()
-    open var aniTransitionProducer: AniTransitionProducerType = FrameAniTransitionProducer()
+    // MARK: - NavigationInteractiveControlType
+    /// NavigationInteractiveControlType properties
+    open var interactiveProducer: InteractiveProducerType
+    open var aniTransitionProducer: AniTransitionProducerType
     open var interactiveEnabled: Bool = true
     open var draggingGesture: UIPanGestureRecognizer? = nil
     open var draggingEdge: InteractiveDraggingEdge? = nil
     
-    // MARK: - UINavigationControllerDelegate
+    /// 清除手势，该方法必须将 draggingGesture 设置为nil
+    public func clearDraggingGesture() {
+        draggingGesture = nil
+    }
+    
+    // MARK: - init
+    public init(
+        aniTransitionProducer: AniTransitionProducerType,
+        interactiveProducer: InteractiveProducerType) {
+        self.aniTransitionProducer = aniTransitionProducer
+        self.interactiveProducer = interactiveProducer
+        super.init()
+    }
+    
+    public override convenience init() {
+        self.init(aniTransitionProducer:FrameAniTransitionProducer(),
+                  interactiveProducer: GeneralInteractiveProducer())
+    }
+    
+    // MARK: - UINavigationControllerDelegate 
+    /// UI的各种delegate扩展真的麻烦, 这么写只为消除警告
     open func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return aniTransitionProducer.animation(from: fromVC, to: toVC, For: AniTransitionOperation(operation))
+        return noobj_naviController(navigationController, operation, fromVC, toVC)
     }
     
     open func navigationController(_ navigationController: UINavigationController, interactionControllerFor animationController: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
-        ///该处一定要将draggingGesture在返回前设置为nil，否则会出现系统返回失效的bug
-        defer {
-            draggingGesture = nil
-        }
-        guard interactiveEnabled,
-            let gesture = draggingGesture,
-            let edge = draggingEdge else {
-                return nil
-        }
-        return interactiveProducer.interactionControllerFor(animationController, draggingGesture: gesture, draggingEdg: edge)
+        return noobj_naviController(navigationController, animationController)
     }
+ 
 }

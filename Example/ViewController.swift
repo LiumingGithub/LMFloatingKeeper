@@ -80,7 +80,6 @@ class NormalViewController: UIViewController {
         }
     }
     
-    
     deinit {
         print("func:[\(#function), class:[\(self.classForCoder)]]")
     }
@@ -89,17 +88,14 @@ class NormalViewController: UIViewController {
 // 支持自定义的侧滑返回，
 class InteractiveViewController: NormalViewController {
     
-    var gesture: UIPanGestureRecognizer?
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //需要调用此方法，绑定自定义的侧滑返回效果
-        if let control = navigationController?.delegate as? FloatingKeeperControl,
-            let producer = control.aniTransitionProducer as? FloatingKeepTransitionProducer {
-            
+        // 根据转场动画的方向，来判断侧滑返回手势添加的位置
+        // 如果是确定的方向，直接设定方向添加即可
+        if let control = navigationController?.delegate as? FloatingKeeperControl {
             let edg: InteractiveDraggingEdge
-            switch producer.uponAnimationType {
+            switch control.floatingTransitionProducer.uponAnimationType {
             case .fromLeft:
                 edg = .right
                 break
@@ -107,10 +103,8 @@ class InteractiveViewController: NormalViewController {
                 edg = .left
                 break
             }
-            
             if let gesture = lm.interactivePop(edg) {
                 view.addGestureRecognizer(gesture)
-                self.gesture = gesture
             }
         }
     }

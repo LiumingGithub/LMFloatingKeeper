@@ -17,7 +17,6 @@ class SettingViewController: UITableViewController {
     
     var control: FloatingKeeperControl?
     
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -32,7 +31,7 @@ class SettingViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
 
-        guard let producer = control?.aniTransitionProducer as? FloatingKeepTransitionProducer else { return }
+        guard let producer = control?.floatingTransitionProducer else { return }
 
         switch indexPath.section {
         case 0:
@@ -67,7 +66,7 @@ class SettingViewController: UITableViewController {
     
     @IBAction func applyAnimationSettings(_ sender: Any) {
         if let selectedRows = tableView.indexPathsForSelectedRows,
-            let producer = control?.aniTransitionProducer as? FloatingKeepTransitionProducer {
+            let producer = control?.floatingTransitionProducer {
             let seleted1 = selectedRows.filter({$0.section == 0}).first!.row
             let selected2 = selectedRows.filter({$0.section == 1}).first!.row
             producer.uponAnimationType = Constant.section1[seleted1].1

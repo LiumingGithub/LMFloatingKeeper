@@ -194,9 +194,9 @@
 		47193B562240B6B900D84152 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				47193B572240B6D200D84152 /* LMGlobalConstant.swift */,
 				47193B5E2240C2F200D84152 /* ShapeComposable.swift */,
 				47193B5B2240B86E00D84152 /* RectDivider.swift */,
-				47193B572240B6D200D84152 /* LMGlobalConstant.swift */,
 				47193B592240B81C00D84152 /* CGRect+Extensions.swift */,
 			);
 			path = Utils;
