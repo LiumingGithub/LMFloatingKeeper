@@ -55,8 +55,7 @@
   
   override func viewDidLoad() {
         super.viewDidLoad()
-        
-        /// 默认的手势是左侧，向右侧滑。
+       
         /// 如果你的设置的Transition动画是从左侧push，则这里设定为.right
         if let gesture = self.lm.interactivePop(.left) {
             view.addGestureRecognizer(gesture)
@@ -68,7 +67,6 @@
 该步骤仅针对FloatingKeeperControl, 实现该协议的UIViewController，将会有微信浮窗效果
 
 ```swift
-// 支持微信浮窗效果的侧滑返回
 class FloatingAbleViewController: UIViewController, FloatingKeepAble {
     // your implemention
 }
